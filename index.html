@@ -1,208 +1,437 @@
-Hier ist ein vollständiges Beispiel für deine index.html, das alle gewünschten Verbesserungen (Accessibility, Responsive Design, Performance, SEO, Farben, Schriftarten, korrekte Bildanzeige, transparentes Hintergrundbild) enthält.  
-**Wichtige Hinweise:**  
-- Ich verwende überall die lokal vorliegenden Bilddateien (`Burni1.png`, `burnicoin.jpg`), wie sie in deinem Repo vorliegen.  
-- Bitte prüfe, ob du die Bibliotheken lokal einbinden möchtest; dies ist optional und hier weiterhin per CDN wie im Original, da du keine lokalen Tailwind/Chart.js-Dateien gepusht hast.  
-- Du kannst die Meta-Daten (SEO) nach Bedarf anpassen.
-
-```html
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title data-i18n="page_title">Burni Token - Discover the Magic!</title>
-  <!-- SEO Meta -->
-  <meta name="description" content="Burni Token – Die deflationäre Kryptowährung auf dem XRPL.">
-  <meta name="keywords" content="Burni, Token, XRPL, Krypto, Deflation, Blockchain, Cryptocurrency">
-  <meta property="og:title" content="Burni Token - Discover the Magic!">
-  <meta property="og:description" content="Burni Token – Die deflationäre Kryptowährung auf dem XRPL.">
-  <meta property="og:image" content="Burni1.png">
-  <meta property="og:type" content="website">
-  <!-- Tailwind CSS (optional: für Produktion lokal einbinden) -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Chart.js (optional: für Produktion lokal einbinden) -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Baloo+2:wght@700&display=swap" rel="stylesheet">
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      color: #374151;
-    }
-    body {
-      /* Transparentes Hintergrundbild über die ganze Seite */
-      background: linear-gradient(rgba(254,251,246,0.95),rgba(254,251,246,0.95)), url('Burni1.png') center center / cover no-repeat fixed;
-      min-height: 100vh;
-      position: relative;
-      z-index: 1;
-    }
-    h1, h2, h3 {
-      font-family: 'Baloo 2', cursive;
-      color: #F97316;
-    }
-    .pixar-button {
-      background-color: #2DD4BF;
-      color: white;
-      font-family: 'Baloo 2', cursive;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .pixar-button:hover {
-      transform: translateY(-3px) scale(1.05);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    }
-    .pixar-button-secondary {
-      background-color: #3B82F6;
-    }
-    .section-card {
-      background-color: white;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(249, 115, 22, 0.1);
-      overflow: hidden;
-    }
-    .burni-mascot {
-      width: 100px;
-      height: auto;
-      animation: float 3s ease-in-out infinite;
-      max-width: 100%;
-    }
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-    /* Responsive Chart Container */
-    .chart-container {
-      position: relative;
-      width: 100%;
-      max-width: 500px;
-      margin: 0 auto;
-      height: 300px;
-      max-height: 350px;
-    }
-    @media (max-width: 768px) {
-      .chart-container {
-        height: 250px;
-        max-height: 300px;
-      }
-      .burni-mascot {
-        width: 80px;
-      }
-    }
-    /* Language Switcher Accessibility */
-    #language-switcher select {
-      background-color: white;
-      border: 1px solid #ccc;
-      padding: 8px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1rem;
-      color: #F97316;
-      font-family: 'Inter', sans-serif;
-      appearance: none;
-      background-repeat: no-repeat;
-      background-position: right 8px center;
-      background-size: 12px;
-      padding-right: 30px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Burni Token - Your next-generation cryptocurrency for a decentralized future. Learn about our vision, features, and community.">
+    <meta name="keywords" content="Burni, Token, Cryptocurrency, Crypto, Blockchain, Decentralized, Web3, Digital Currency">
+    
+    <meta property="og:title" content="Burni Token - The Future of Decentralized Finance">
+    <meta property="og:description" content="Explore Burni Token: Secure, fast, and community-driven. Join our journey into the future of crypto.">
+    <meta property="og:image" content="https://yourwebsite.com/burni-og-image.jpg"> <meta property="og:url" content="https://yourwebsite.com/"> <meta property="og:type" content="website">
+
+    <title>Burni Token - Innovative Decentralized Cryptocurrency</title>
+
+    <link href="./lib/tailwind.min.css" rel="stylesheet">
+    
+    <style>
+        /* General Body & Root Styles */
+        body { font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        .baloo-2 { font-family: 'Baloo 2', cursive; }
+        .gradient-bg { background-image: linear-gradient(to right, #FF7E5F, #FEB47B); } /* Consistent warm gradient */
+        .text-gradient { background-clip: text; -webkit-background-clip: text; color: transparent; background-image: linear-gradient(to right, #F97316, #FEF08A); } /* Energetic orange-yellow gradient */
+        .text-gradient-purple { background-clip: text; -webkit-background-clip: text; color: transparent; background-image: linear-gradient(to right, #9333ea, #c026d3); } /* Consistent purple gradient */
+        .cta-button { @apply px-8 py-3 rounded-full text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 shadow-lg; }
+        .cta-primary { @apply cta-button bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600; }
+        .cta-secondary { @apply cta-button bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700; }
+        .feature-icon { @apply p-4 rounded-xl text-4xl mb-4 text-orange-500 bg-orange-100; } /* Consistent icon styling */
+        .footer-link { @apply text-gray-300 hover:text-white transition duration-200; }
+        .header-link { @apply text-gray-700 hover:text-orange-500 transition duration-200; }
+
+        /* Background Image Opacity */
+        #hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('Burni1.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1; /* Adjust as needed */
+            z-index: -1;
+        }
+
+        /* Responsive Navbar specific styles */
+        @media (max-width: 767px) {
+            #mobile-menu { @apply absolute top-16 left-0 w-full bg-white shadow-lg p-4 transition-transform duration-300 ease-in-out transform -translate-y-full; }
+            #mobile-menu.active { @apply translate-y-0; }
+        }
+    </style>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Baloo+2:wght@700&display=swap" rel="stylesheet">
+    
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; media-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
 </head>
-<body class="antialiased">
-  <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-md py-3">
-    <div class="container mx-auto px-6 flex items-center justify-between">
-      <div class="flex items-center">
-        <span class="text-3xl font-bold text-orange-500">🔥 Burni</span>
-      </div>
-      <div class="flex items-center space-x-4">
-        <div id="language-switcher" class="relative" aria-label="Sprache wählen">
-          <select id="lang-select" class="block appearance-none w-full border border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" aria-label="Sprache wählen">
-            <option value="en">🇬🇧 English</option>
-            <option value="de">🇩🇪 Deutsch</option>
-            <option value="ru">🇷🇺 Русский</option>
-            <option value="ko">🇰🇷 한국어</option>
-            <option value="tr">🇹🇷 Türkçe</option>
-            <option value="zh">🇨🇳 中文</option>
-            <option value="hi">🇮🇳 हिन्दी</option>
-            <option value="es">🇪🇸 Español</option>
-            <option value="fr">🇫🇷 Français</option>
-            <option value="ar">🇸🇦 العربية</option>
-            <option value="bn">🇧🇩 বাংলা</option>
-            <option value="pt">🇵🇹 Português</option>
-          </select>
+<body class="text-gray-800">
+
+    <header class="relative bg-white shadow-sm py-4 z-20">
+        <nav class="container mx-auto flex items-center justify-between px-6">
+            <a href="#" class="flex items-center space-x-2">
+                <img src="burnicoin.jpg" alt="Burni Token Logo - A flaming coin" class="h-10 w-10 rounded-full">
+                <span class="text-2xl font-bold text-orange-600 baloo-2">Burni Token</span>
+            </a>
+
+            <ul class="hidden md:flex space-x-8">
+                <li><a href="#about" class="header-link">About Us</a></li>
+                <li><a href="#features" class="header-link">Features</a></li>
+                <li><a href="#roadmap" class="header-link">Roadmap</a></li>
+                <li><a href="#tokenomics" class="header-link">Tokenomics</a></li>
+                <li><a href="#community" class="header-link">Community</a></li>
+            </ul>
+
+            <div class="flex items-center space-x-4">
+                <div class="relative inline-block text-left">
+                    <button id="language-btn" aria-haspopup="true" aria-expanded="false" aria-controls="language-menu" class="flex items-center space-x-2 p-2 rounded-md bg-gray-100 hover:bg-gray-200 transition duration-200">
+                        <span id="selected-lang-text">EN</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="language-menu" role="menu" aria-orientation="vertical" aria-labelledby="language-btn" class="hidden origin-top-right absolute right-0 mt-2 w-24 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10">
+                        <div class="py-1" role="none">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem" data-lang="en">EN</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem" data-lang="de">DE</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem" data-lang="fr">FR</a>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="mobile-menu-button" class="md:hidden p-2 rounded-md hover:bg-gray-100 transition duration-200" aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle mobile menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+        </nav>
+
+        <nav id="mobile-menu" class="md:hidden">
+            <ul class="flex flex-col space-y-4 px-6 pb-4">
+                <li><a href="#about" class="block text-gray-700 hover:text-orange-500 transition duration-200 py-2">About Us</a></li>
+                <li><a href="#features" class="block text-gray-700 hover:text-orange-500 transition duration-200 py-2">Features</a></li>
+                <li><a href="#roadmap" class="block text-gray-700 hover:text-orange-500 transition duration-200 py-2">Roadmap</a></li>
+                <li><a href="#tokenomics" class="block text-gray-700 hover:text-orange-500 transition duration-200 py-2">Tokenomics</a></li>
+                <li><a href="#community" class="block text-gray-700 hover:text-orange-500 transition duration-200 py-2">Community</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero-section" class="relative min-h-screen flex items-center justify-center text-center p-8 overflow-hidden z-0">
+            <div class="relative z-10 max-w-4xl mx-auto px-4">
+                <h1 class="text-5xl md:text-6xl font-extrabold text-white baloo-2 leading-tight drop-shadow-lg mb-6">
+                    <span class="text-gradient">Burni Token</span>: The Future of Decentralized Finance
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto">
+                    Secure, scalable, and community-driven. Burni Token is redefining the crypto landscape.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+                    <a href="#features" class="cta-primary">
+                        Discover Features
+                    </a>
+                    <a href="#tokenomics" class="cta-secondary">
+                        View Tokenomics
+                    </a>
+                </div>
+            </div>
+            <img src="Burni1.jpg" alt="Burni Mascot in Pixar Style - A friendly flame character" class="absolute inset-0 w-full h-full object-cover opacity-10 z-0">
+        </section>
+
+        <section id="about" class="py-20 bg-gray-50">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-4xl font-bold mb-12 text-gray-800 baloo-2">About <span class="text-orange-600">Burni Token</span></h2>
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+                            Burni Token is an innovative cryptocurrency built on a robust blockchain, designed to offer unmatched security, transparency, and efficiency. Our vision is to create a truly decentralized ecosystem where users have full control over their assets and participate actively in the network's governance.
+                        </p>
+                        <p class="text-lg text-gray-700 leading-relaxed">
+                            We are committed to fostering a vibrant and engaged community, driving sustainable growth, and developing cutting-edge solutions that solve real-world problems in the digital finance space. Join us on our journey to revolutionize decentralized finance.
+                        </p>
+                    </div>
+                    <div>
+                        <img src="burnicoin.jpg" alt="A glowing Burni coin, symbolizing digital currency" class="rounded-xl shadow-xl transform hover:scale-105 transition duration-300 mx-auto">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="py-20 bg-white">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-4xl font-bold mb-12 text-gray-800 baloo-2">Key <span class="text-orange-600">Features</span></h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="p-8 bg-gray-50 rounded-xl shadow-lg transform hover:shadow-xl hover:scale-105 transition duration-300">
+                        <div class="feature-icon"><i class="fas fa-lock"></i></div>
+                        <h3 class="text-2xl font-semibold mb-4 text-gray-900">High Security</h3>
+                        <p class="text-gray-700">Utilizing advanced encryption and blockchain technology to ensure your assets are safe and secure.</p>
+                    </div>
+                    <div class="p-8 bg-gray-50 rounded-xl shadow-lg transform hover:shadow-xl hover:scale-105 transition duration-300">
+                        <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                        <h3 class="text-2xl font-semibold mb-4 text-gray-900">Lightning Fast Transactions</h3>
+                        <p class="text-gray-700">Experience near-instant transaction speeds, making Burni Token ideal for daily use.</p>
+                    </div>
+                    <div class="p-8 bg-gray-50 rounded-xl shadow-lg transform hover:shadow-xl hover:scale-105 transition duration-300">
+                        <div class="feature-icon"><i class="fas fa-users"></i></div>
+                        <h3 class="text-2xl font-semibold mb-4 text-gray-900">Community Driven</h3>
+                        <p class="text-gray-700">Our vibrant community plays a key role in shaping the future of Burni Token.</p>
+                    </div>
+                    <div class="p-8 bg-gray-50 rounded-xl shadow-lg transform hover:shadow-xl hover:scale-105 transition duration-300">
+                        <div class="feature-icon"><i class="fas fa-leaf"></i></div>
+                        <h3 class="text-2xl font-semibold mb-4 text-gray-900">Eco-Friendly Blockchain</h3>
+                        <p class="text-gray-700">Committed to sustainability with an energy-efficient blockchain infrastructure.</p>
+                    </div>
+                    <div class="p-8 bg-gray-50 rounded-xl shadow-lg transform hover:shadow-xl hover:scale-105 transition duration-300">
+                        <div class="feature-icon"><i class="fas fa-wallet"></i></div>
+                        <h3 class="text-2xl font-semibold mb-4 text-gray-900">Accessible Wallets</h3>
+                        <p class="text-gray-700">Easy-to-use and secure wallets available for various platforms.</p>
+                    </div>
+                    <div class="p-8 bg-gray-50 rounded-xl shadow-lg transform hover:shadow-xl hover:scale-105 transition duration-300">
+                        <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                        <h3 class="text-2xl font-semibold mb-4 text-gray-900">Growth Potential</h3>
+                        <p class="text-gray-700">Designed for long-term growth and stability within the crypto market.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="roadmap" class="py-20 bg-gradient-to-r from-orange-500 to-yellow-500 text-white">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-4xl font-bold mb-12 baloo-2">Our <span class="text-white">Roadmap</span></h2>
+                <div class="relative flex flex-col items-center">
+                    <div class="absolute h-full w-1 bg-white left-1/2 transform -translate-x-1/2 rounded-full hidden md:block"></div>
+                    
+                    <div class="w-full md:w-3/4 flex flex-col md:flex-row items-center justify-between my-8">
+                        <div class="md:w-5/12 text-center md:text-right p-4">
+                            <h3 class="text-2xl font-semibold mb-2">Q4 2023: Foundation & Launch</h3>
+                            <p class="text-gray-100">Smart contract development, initial coin offering (ICO), and community building.</p>
+                        </div>
+                        <div class="md:w-1/12 flex justify-center items-center relative my-4 md:my-0">
+                            <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center text-orange-500 font-bold shadow-lg">1</div>
+                        </div>
+                        <div class="md:w-5/12"></div>
+                    </div>
+
+                    <div class="w-full md:w-3/4 flex flex-col md:flex-row items-center justify-between my-8">
+                        <div class="md:w-5/12"></div>
+                        <div class="md:w-1/12 flex justify-center items-center relative my-4 md:my-0">
+                            <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center text-orange-500 font-bold shadow-lg">2</div>
+                        </div>
+                        <div class="md:w-5/12 text-center md:text-left p-4">
+                            <h3 class="text-2xl font-semibold mb-2">Q1 2024: Ecosystem Expansion</h3>
+                            <p class="text-gray-100">Partnerships, listing on major exchanges, and dApp integration development.</p>
+                        </div>
+                    </div>
+
+                    <div class="w-full md:w-3/4 flex flex-col md:flex-row items-center justify-between my-8">
+                        <div class="md:w-5/12 text-center md:text-right p-4">
+                            <h3 class="text-2xl font-semibold mb-2">Q2 2024: Platform Enhancement</h3>
+                            <p class="text-gray-100">Staking implementation, improved wallet features, and developer tools.</p>
+                        </div>
+                        <div class="md:w-1/12 flex justify-center items-center relative my-4 md:my-0">
+                            <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center text-orange-500 font-bold shadow-lg">3</div>
+                        </div>
+                        <div class="md:w-5/12"></div>
+                    </div>
+
+                    <div class="w-full md:w-3/4 flex flex-col md:flex-row items-center justify-between my-8">
+                        <div class="md:w-5/12"></div>
+                        <div class="md:w-1/12 flex justify-center items-center relative my-4 md:my-0">
+                            <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center text-orange-500 font-bold shadow-lg">4</div>
+                        </div>
+                        <div class="md:w-5/12 text-center md:text-left p-4">
+                            <h3 class="text-2xl font-semibold mb-2">Q3 2024: Global Adoption</h3>
+                            <p class="text-gray-100">Expansion into new markets, major marketing campaigns, and community governance.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tokenomics" class="py-20 bg-gray-50">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-4xl font-bold mb-12 text-gray-800 baloo-2">Burni <span class="text-orange-600">Tokenomics</span></h2>
+                <p class="text-lg text-gray-700 mb-8 max-w-2xl mx-auto">
+                    Understanding the distribution and allocation of Burni tokens is key to appreciating its sustainable economic model.
+                </p>
+                <div class="flex flex-col lg:flex-row items-center justify-center gap-12">
+                    <div class="w-full lg:w-1/2 max-w-md">
+                        <canvas id="tokenomicsChart" class="bg-white p-6 rounded-xl shadow-lg"></canvas>
+                    </div>
+                    <div class="w-full lg:w-1/2 text-left">
+                        <ul class="space-y-4 text-lg text-gray-700">
+                            <li class="flex items-center"><span class="w-4 h-4 rounded-full bg-blue-500 mr-3"></span> **40% Public Sale:** For wide distribution and initial funding.</li>
+                            <li class="flex items-center"><span class="w-4 h-4 rounded-full bg-green-500 mr-3"></span> **25% Community Rewards:** Incentivizing active participation and growth.</li>
+                            <li class="flex items-center"><span class="w-4 h-4 rounded-full bg-yellow-500 mr-3"></span> **15% Development Fund:** Ensuring continuous innovation and platform improvements.</li>
+                            <li class="flex items-center"><span class="w-4 h-4 rounded-full bg-red-500 mr-3"></span> **10% Team & Advisors:** Vested for long-term commitment.</li>
+                            <li class="flex items-center"><span class="w-4 h-4 rounded-full bg-purple-500 mr-3"></span> **10% Liquidity & Exchange Listings:** Facilitating trading and accessibility.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="community" class="py-20 bg-cover bg-center text-white relative" style="background-image: url('Burni1.jpg');">
+            <div class="absolute inset-0 bg-black opacity-70"></div>
+            <div class="container mx-auto px-6 text-center relative z-10">
+                <h2 class="text-4xl font-bold mb-8 baloo-2">Join Our <span class="text-yellow-400">Vibrant Community</span></h2>
+                <p class="text-xl mb-10 max-w-3xl mx-auto">
+                    Become a part of the Burni Token movement. Connect with us on social media and stay updated with the latest news and developments.
+                </p>
+                <div class="flex flex-wrap justify-center gap-6 mb-10">
+                    <a href="https://twitter.com/yourhandle" target="_blank" rel="noopener noreferrer" class="cta-button bg-blue-500 hover:bg-blue-600 flex items-center space-x-2">
+                        <i class="fab fa-twitter text-xl"></i><span>Twitter</span>
+                    </a>
+                    <a href="https://t.me/yourgroup" target="_blank" rel="noopener noreferrer" class="cta-button bg-blue-600 hover:bg-blue-700 flex items-center space-x-2">
+                        <i class="fab fa-telegram-plane text-xl"></i><span>Telegram</span>
+                    </a>
+                    <a href="https://discord.com/yourserver" target="_blank" rel="noopener noreferrer" class="cta-button bg-indigo-600 hover:bg-indigo-700 flex items-center space-x-2">
+                        <i class="fab fa-discord text-xl"></i><span>Discord</span>
+                    </a>
+                    <a href="https://medium.com/@yourprofile" target="_blank" rel="noopener noreferrer" class="cta-button bg-gray-700 hover:bg-gray-800 flex items-center space-x-2">
+                        <i class="fab fa-medium text-xl"></i><span>Medium</span>
+                    </a>
+                </div>
+                
+                <h3 class="text-3xl font-bold mb-6 text-yellow-400 baloo-2">Subscribe to Our Newsletter</h3>
+                <form action="#" method="POST" class="max-w-xl mx-auto flex flex-col sm:flex-row gap-4">
+                    <input type="email" placeholder="Enter your email address" required 
+                           class="flex-grow p-4 rounded-full border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-900 bg-white shadow-md transition duration-200">
+                    <button type="submit" class="cta-primary bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600">
+                        Subscribe
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-900 text-gray-400 py-12">
+        <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <h3 class="text-xl font-semibold text-white mb-4 baloo-2">Burni Token</h3>
+                <p class="text-sm leading-relaxed">
+                    Redefining decentralized finance with a secure, scalable, and community-driven cryptocurrency.
+                </p>
+            </div>
+
+            <div>
+                <h3 class="text-xl font-semibold text-white mb-4 baloo-2">Quick Links</h3>
+                <ul class="space-y-2">
+                    <li><a href="#about" class="footer-link">About Us</a></li>
+                    <li><a href="#features" class="footer-link">Features</a></li>
+                    <li><a href="#roadmap" class="footer-link">Roadmap</a></li>
+                    <li><a href="#tokenomics" class="footer-link">Tokenomics</a></li>
+                    <li><a href="#community" class="footer-link">Community</a></li>
+                    <li><a href="#" class="footer-link">Privacy Policy</a></li>
+                    <li><a href="#" class="footer-link">Terms of Service</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="text-xl font-semibold text-white mb-4 baloo-2">Connect With Us</h3>
+                <p class="text-sm mb-4">Email: info@burnitoken.com</p>
+                <div class="flex space-x-4">
+                    <a href="https://twitter.com/yourhandle" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition duration-200 text-2xl" aria-label="Burni Token on Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="https://t.me/yourgroup" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition duration-200 text-2xl" aria-label="Burni Token on Telegram"><i class="fab fa-telegram-plane"></i></a>
+                    <a href="https://discord.com/yourserver" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition duration-200 text-2xl" aria-label="Burni Token on Discord"><i class="fab fa-discord"></i></a>
+                    <a href="https://medium.com/@yourprofile" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition duration-200 text-2xl" aria-label="Burni Token on Medium"><i class="fab fa-medium"></i></a>
+                </div>
+            </div>
         </div>
-        <div class="hidden md:flex space-x-2">
-          <a href="#hero" class="nav-link active" data-i18n="nav_home">Home</a>
-          <a href="#about" class="nav-link" data-i18n="nav_about">About Burni</a>
-          <a href="#tokenomics" class="nav-link" data-i18n="nav_tokenomics">Tokenomics</a>
-          <a href="#interact" class="nav-link" data-i18n="nav_trade">Trade</a>
-          <a href="#community" class="nav-link" data-i18n="nav_community">Community</a>
+        <div class="text-center text-gray-500 text-sm mt-8">
+            &copy; 2024 Burni Token. All rights reserved.
         </div>
-        <button id="mobile-menu-button" class="md:hidden pixar-button px-3 py-1" data-i18n="menu_button" aria-label="Menü öffnen">Menu</button>
-      </div>
-    </div>
-    <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg">
-      <a href="#hero" class="block px-6 py-3 text-orange-500 hover:bg-orange-100" data-i18n="nav_home">Home</a>
-      <a href="#about" class="block px-6 py-3 text-orange-500 hover:bg-orange-100" data-i18n="nav_about">About Burni</a>
-      <a href="#tokenomics" class="block px-6 py-3 text-orange-500 hover:bg-orange-100" data-i18n="nav_tokenomics">Tokenomics</a>
-      <a href="#interact" class="block px-6 py-3 text-orange-500 hover:bg-orange-100" data-i18n="nav_trade">Trade</a>
-      <a href="#community" class="block px-6 py-3 text-orange-500 hover:bg-orange-100" data-i18n="nav_community">Community</a>
-    </div>
-  </nav>
-  <section id="hero" class="py-16 md:py-24 bg-gradient-to-br from-orange-300 via-red-300 to-yellow-300 min-h-[70vh] flex items-center">
-    <div class="container mx-auto px-6 text-center">
-      <img src="Burni1.png" alt="Burni-Maskottchen mit Flamme, Pixar-Stil" class="burni-mascot mx-auto mb-8" loading="lazy">
-      <h1 class="text-5xl md:text-7xl font-bold mb-6 text-white leading-tight" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.3);" data-i18n="hero_title">Welcome to Burni!</h1>
-      <p class="text-xl md:text-2xl text-white mb-10 max-w-2xl mx-auto" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.2);" data-i18n="hero_description">
-        Discover the deflationary token designed to create value through scarcity. Join us on a fiery journey of discovery!
-      </p>
-      <a href="#about" class="pixar-button px-10 py-4 text-xl rounded-full" data-i18n="hero_button">Learn More! ✨</a>
-    </div>
-  </section>
-  <main class="container mx-auto px-6 py-12">
-    <section id="about" class="py-16">
-      <div class="text-center mb-12">
-        <h2 class="text-4xl md:text-5xl mb-4" data-i18n="about_title">What is Burni?</h2>
-        <p class="text-lg text-gray-700 max-w-xl mx-auto" data-i18n="about_description">Burni is more than just a token. It's a promise for a deflationary future...</p>
-      </div>
-      <div class="grid md:grid-cols-2 gap-12 items-center">
-        <div class="section-card p-8">
-          <h3 class="text-3xl mb-4 text-center" data-i18n="burn_title">The Secret of Token Burning</h3>
-          <p class="text-gray-600 mb-6" data-i18n="burn_description">Imagine tokens being burned like logs in a magical fire...</p>
-          <!-- Animation omitted for brevity -->
-          <p class="text-gray-600 mt-4 text-sm" data-i18n="burn_animation_note">This animation illustrates how tokens are symbolically removed from circulation.</p>
-        </div>
-        <div class="section-card p-8 text-center">
-          <img src="burnicoin.jpg" alt="Burni Coin, goldene Münze, Pixar-Stil mit Blackhole-Schild" class="mx-auto mb-6 h-24 w-auto" loading="lazy">
-          <h3 class="text-3xl mb-4" data-i18n="blackholed_title">Burni's Promise: "Blackholed"</h3>
-          <p class="text-gray-600 mb-4" data-i18n="blackholed_description">Burni is marked as <strong class="text-orange-500">"Blackholed: YES"</strong>...</p>
-          <!-- Tooltip omitted for brevity -->
-        </div>
-      </div>
-    </section>
-    <!-- Weitere Sektionen analog, alle Bilder mit loading="lazy" und passenden alt-Texten versehen -->
-  </main>
-  <footer class="bg-gray-800 text-white py-12 text-center">
-    <div class="container mx-auto px-6">
-      <span class="text-2xl font-bold text-orange-400 mb-4 block">🔥 Burni</span>
-      <p class="mb-2 text-gray-400" data-i18n="footer_slogan">Developed with passion and a touch of Pixar magic.</p>
-      <p class="text-sm text-gray-500">&copy; <span id="currentYear"></span> <span data-i18n="footer_rights">Burni Token. All rights reserved (concept).</span></p>
-      <p class="text-xs text-gray-600 mt-2" data-i18n="footer_placeholder_note">Mascot placeholders by placehold.co.</p>
-    </div>
-  </footer>
-  <script>
-    // Automatisches Jahr im Footer
-    document.getElementById('currentYear').textContent = new Date().getFullYear();
-    // Mobile-Menü-Button
-    const mobileMenuButton = document.getElementById('mobile-menu-button');
-    const mobileMenu = document.getElementById('mobile-menu');
-    mobileMenuButton.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-    });
-    // Optional: Chart.js, Navigation usw. wie im Original
-  </script>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <script src="./lib/chart.min.js"></script>
+
+    <script>
+        // Language Switcher Logic
+        const langBtn = document.getElementById('language-btn');
+        const langMenu = document.getElementById('language-menu');
+        const selectedLangText = document.getElementById('selected-lang-text');
+
+        langBtn.addEventListener('click', () => {
+            const isExpanded = langBtn.getAttribute('aria-expanded') === 'true';
+            langBtn.setAttribute('aria-expanded', !isExpanded);
+            langMenu.classList.toggle('hidden');
+        });
+
+        langMenu.addEventListener('click', (event) => {
+            if (event.target.tagName === 'A') {
+                const lang = event.target.dataset.lang;
+                selectedLangText.textContent = lang.toUpperCase();
+                // In a real application, you'd load content based on 'lang' here
+                console.log('Language changed to:', lang);
+                langMenu.classList.add('hidden');
+                langBtn.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Close language menu if clicked outside
+        document.addEventListener('click', (event) => {
+            if (!langBtn.contains(event.target) && !langMenu.contains(event.target)) {
+                langMenu.classList.add('hidden');
+                langBtn.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Mobile Menu Toggle Logic
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+            mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+            mobileMenu.classList.toggle('active');
+        });
+
+        // Close mobile menu when a link is clicked
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                mobileMenuButton.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        // Tokenomics Chart
+        document.addEventListener('DOMContentLoaded', () => {
+            const ctx = document.getElementById('tokenomicsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Public Sale', 'Community Rewards', 'Development Fund', 'Team & Advisors', 'Liquidity & Exchange Listings'],
+                    datasets: [{
+                        data: [40, 25, 15, 10, 10],
+                        backgroundColor: [
+                            'rgb(59, 130, 246)',  // blue-500
+                            'rgb(34, 197, 94)',   // green-500
+                            'rgb(234, 179, 8)',   // yellow-500
+                            'rgb(239, 68, 68)',   // red-500
+                            'rgb(168, 85, 247)'   // purple-500
+                        ],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    size: 14,
+                                    family: 'Inter, sans-serif'
+                                },
+                                color: '#333'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
-```
-
-**Du kannst diesen Code direkt als neue index.html verwenden!**  
-Bei weiteren Wünschen (z.B. Barrierefreiheit noch weiter ausbauen, ARIA-Labels an anderen Stellen, weitere SEO-Verbesserungen, weitere Farben/Fonts) sag einfach Bescheid!
