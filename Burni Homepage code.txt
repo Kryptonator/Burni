@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burni Token - Entdecke die Magie!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Baloo+2:wght@700&display=swap" rel="stylesheet">
+    <!-- Visualization & Content Choices: 
+        - Token Burning Explanation: Goal: Inform & Engage. Viz: Animated sequence of Burni mascot "consuming" tokens which then disappear into a stylized black hole. Interaction: Animation triggers on scroll or a "Play" button. Justification: Visually simplifies a core abstract concept, making it memorable and aligned with Pixar style. Method: HTML/CSS/JS animation (no SVG).
+        - "Blackholed: YES" Emphasis: Goal: Inform & Build Trust. Viz: Prominent display of "Blackholed: YES" with a unique visual marker (e.g., a star or a sealed vault icon - Unicode/CSS). Interaction: Hover to show a tooltip explaining its significance. Justification: Highlights a key trust feature. Method: HTML/CSS.
+        - Tokenomics (Table 1): Goal: Inform. Viz: Interactive HTML table with key metrics. A separate donut chart (Chart.js) for Max Supply vs. Circulating Supply. Interaction: Hover on table rows for emphasis, chart tooltips. Justification: Presents data clearly and offers a visual summary of supply. Method: HTML/CSS table, Chart.js for chart (Canvas).
+        - XRPL Benefits: Goal: Inform. Viz: Simple graphic sequence (e.g., fast-moving particles) or mascot gesture indicating speed/low cost. Interaction: Subtle animation on view. Justification: Conveys benefits quickly and visually. Method: HTML/CSS/JS animation.
+        - Market Links (XPMarket): Goal: Enable Action. Viz: Clearly labeled buttons with icons (Unicode/CSS) styled in the theme. Mascot points or gestures towards them. Interaction: Standard button clicks. Justification: Provides direct access to trading platforms. Method: HTML/CSS buttons.
+        - ATH/ATL Data: Goal: Inform. Viz: Simple line or bar chart showing ATH and ATL points. Interaction: Chart tooltips. Justification: Visualizes price history highlights. Method: Chart.js (Canvas).
+        - Community (Twitter Link): Goal: Engage. Viz: Prominent button/link with Twitter icon (Unicode/CSS) and a call to action from the mascot. Interaction: Standard link. Justification: Drives traffic to community channels. Method: HTML/CSS.
+        - Mascot Guidance: Goal: Engage & Assist. Viz: Burni mascot appears in different sections, with varying poses/expressions, offering tooltips or short explanations. Interaction: Mascot reacts to scroll, hover on certain elements. Justification: Creates a friendly, guided experience, personifies the brand. Method: HTML/CSS/JS for sprite-like changes or simple animations.
+    -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FEFBF6; /* Light Cream */
+            color: #374151; /* Dark Gray-Blue */
+        }
+        h1, h2, h3 {
+            font-family: 'Baloo 2', cursive;
+            color: #F97316; /* Energetic Red-Orange */
+        }
+        .pixar-button {
+            background-color: #2DD4BF; /* Calming Teal */
+            color: white;
+            font-family: 'Baloo 2', cursive;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .pixar-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .pixar-button-secondary {
+            background-color: #3B82F6; /* Trustworthy Blue */
+        }
+        .section-card {
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(249, 115, 22, 0.1); /* Energetic Red-Orange shadow */
+            overflow: hidden;
+        }
+        .burni-mascot {
+            width: 100px;
+            height: auto;
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .token-burn-animation-container {
+            width: 200px;
+            height: 150px;
+            margin: 20px auto;
+            position: relative;
+        }
+        .token-particle {
+            width: 15px;
+            height: 15px;
+            background-color: #FDBA74; /* Soft Orange */
+            border-radius: 50%;
+            position: absolute;
+            animation: burn-token 3s infinite ease-in-out;
+        }
+        .black-hole {
+            width: 50px;
+            height: 50px;
+            background-color: #111827; /* Darker Gray for black hole */
+            border-radius: 50%;
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 10px;
+        }
+        @keyframes burn-token {
+            0% { top: 0; opacity: 1; transform: scale(1) translateX(0); }
+            50% { opacity: 0.8; transform: scale(0.8) translateX(20px*var(--i)); }
+            100% { top: 100px; opacity: 0; transform: scale(0.2) translateX(0); }
+        }
+        .nav-link {
+            @apply px-4 py-2 text-lg text-orange-500 hover:text-orange-700 transition-colors duration-300 rounded-lg;
+        }
+        .nav-link.active {
+            @apply text-white bg-orange-500;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 250px;
+                max-height: 300px;
+            }
+        }
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #374151;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        .kpi-card {
+            @apply bg-orange-100 p-4 rounded-lg shadow-md text-center;
+        }
+        .kpi-value {
+            @apply text-3xl font-bold text-orange-600;
+        }
+        .kpi-label {
+            @apply text-sm text-gray-600 mt-1;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-md py-3">
+        <div class="container mx-auto px-6 flex items-center justify-between">
+            <div class="flex items-center">
+                <span class="text-3xl font-bold text-orange-500">🔥 Burni</span>
+            </div>
+            <div class="hidden md:flex space-x-2">
+                <a href="#hero" class="nav-link active">Start</a>
+                <a href="#about" class="nav-link">Über Burni</a>
+                <a href="#tokenomics" class="nav-link">Tokenomics</a>
+                <a href="#interact" class="nav-link">Handeln</a>
+                <a href="#community" class="nav-link">Community</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden pixar-button px-3 py-1">Menü</button>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg">
+            <a href="#hero" class="block px-6 py-3 text-orange-500 hover:bg-orange-100">Start</a>
+            <a href="#about" class="block px-6 py-3 text-orange-500 hover:bg-orange-100">Über Burni</a>
+            <a href="#tokenomics" class="block px-6 py-3 text-orange-500 hover:bg-orange-100">Tokenomics</a>
+            <a href="#interact" class="block px-6 py-3 text-orange-500 hover:bg-orange-100">Handeln</a>
+            <a href="#community" class="block px-6 py-3 text-orange-500 hover:bg-orange-100">Community</a>
+        </div>
+    </nav>
+
+    <section id="hero" class="py-16 md:py-24 bg-gradient-to-br from-orange-300 via-red-300 to-yellow-300 min-h-[70vh] flex items-center">
+        <div class="container mx-auto px-6 text-center">
+            <img src="https://placehold.co/150x150/FF8C00/FFFFFF?text=Burni%20Maskottchen%3A%20Freundliche%20Orange-Gelbe%20Flamme%20mit%20großen%20Augen%20im%20Pixar-Stil" alt="Burni Maskottchen im Pixar Stil" class="burni-mascot mx-auto mb-8">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 text-white leading-tight" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">Willkommen bei Burni!</h1>
+            <p class="text-xl md:text-2xl text-white mb-10 max-w-2xl mx-auto" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.2);">Entdecke den deflationären Token, der entwickelt wurde, um Wert durch Knappheit zu schaffen. Begleite uns auf einer feurigen Entdeckungsreise!</p>
+            <a href="#about" class="pixar-button px-10 py-4 text-xl rounded-full">Erfahre mehr! ✨</a>
+        </div>
+    </section>
+
+    <main class="container mx-auto px-6 py-12">
+        <section id="about" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl mb-4">Was ist Burni?</h2>
+                <p class="text-lg text-gray-700 max-w-xl mx-auto">Burni ist mehr als nur ein Token. Es ist ein Versprechen für eine deflationäre Zukunft. Im Kern von Burni steht ein Mechanismus, der Token dauerhaft aus dem Umlauf entfernt, um potenziell den Wert der verbleibenden Token zu steigern.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="section-card p-8">
+                    <h3 class="text-3xl mb-4 text-center">Das Geheimnis des Token-Burnings</h3>
+                    <p class="text-gray-600 mb-6">Stell dir vor, Token werden wie Holzscheite in einem magischen Feuer verbrannt. Sie verschwinden für immer! Dieser Prozess, "Token-Burning" genannt, reduziert die Gesamtmenge der Burni-Token. Weniger Token können bedeuten, dass jeder einzelne wertvoller wird, ähnlich wie bei seltenen Sammlerstücken.</p>
+                    <div class="token-burn-animation-container">
+                        <div class="token-particle" style="--i:0; animation-delay: 0s;"></div>
+                        <div class="token-particle" style="--i:1; animation-delay: 0.5s;"></div>
+                        <div class="token-particle" style="--i:-1; animation-delay: 1s;"></div>
+                        <div class="black-hole">🔥</div>
+                    </div>
+                    <p class="text-gray-600 mt-4 text-sm">Diese Animation illustriert, wie Token symbolisch aus dem Umlauf genommen werden.</p>
+                </div>
+
+                <div class="section-card p-8 text-center">
+                    <img src="https://placehold.co/100x100/FFD700/FF4500?text=Burni%20Coin%3A%20Goldene%20Münze%20mit%20lachender%20Flamme%20in%20der%20Mitte%20im%20Pixar-Stil" alt="Burni Coin im Pixar Stil mit Blackholed Schild" class="mx-auto mb-6 h-24">
+                    <h3 class="text-3xl mb-4">Burnis Versprechen: "Blackholed"</h3>
+                    <p class="text-gray-600 mb-4">Burni ist als <strong class="text-orange-500">"Blackholed: YES"</strong> gekennzeichnet. Das bedeutet, die Möglichkeit, neue Burni-Token zu erstellen, wurde dauerhaft und unwiderruflich entfernt. Es ist, als hätte man den Schlüssel zum Geldschrank weggeworfen! Dies ist ein starkes Signal für unser Engagement für einen deflationären Mechanismus von Anfang an.</p>
+                    <div class="tooltip">
+                        <span class="text-blue-500 font-semibold cursor-default border-b-2 border-blue-500 border-dashed">Was bedeutet "Blackholed"?</span>
+                        <span class="tooltiptext">Wenn ein Token-Emittent "blackholed" ist, bedeutet das, dass die ausgebende Adresse ihre Rechte zum Prägen neuer Token oder zum Ändern von Token-Eigenschaften aufgegeben hat. Dies macht das maximale Angebot wirklich fix.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tokenomics" class="py-16 bg-orange-50 rounded-3xl">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl mb-4">Burnis Welt: Zahlen & Fakten</h2>
+                <p class="text-lg text-gray-700 max-w-xl mx-auto">Hier ist ein Blick auf die wichtigsten Zahlen, die Burni definieren. Diese Daten geben dir einen Einblick in das wirtschaftliche Fundament und das Potenzial des Tokens.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                <div class="kpi-card">
+                    <div class="kpi-value">1.000.000</div>
+                    <div class="kpi-label">Maximale Versorgung</div>
+                </div>
+                <div class="kpi-card">
+                    <div id="circulatingSupplyValue" class="kpi-value">388.4K</div>
+                    <div class="kpi-label">Zirkulierende Versorgung</div>
+                </div>
+                <div class="kpi-card">
+                    <div id="priceValue" class="kpi-value">$0.0011</div>
+                    <div class="kpi-label">Aktueller Preis</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-value">65</div>
+                    <div class="kpi-label">Anzahl Halter</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-value">78</div>
+                    <div class="kpi-label">Anzahl Trustlines</div>
+                </div>
+                 <div class="kpi-card">
+                    <div class="kpi-value">0%</div>
+                    <div class="kpi-label">Emittentengebühr</div>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-start">
+                <div class="section-card p-8">
+                    <h3 class="text-3xl mb-6 text-center">Token-Details</h3>
+                    <ul class="space-y-3 text-gray-700">
+                        <li><strong>Erstellt am:</strong> 17. Mai 2025</li>
+                        <li class="tooltip"><strong>Allzeithoch (ATH):</strong> 0.0011 XRP (19. Mai 2025)
+                            <span class="tooltiptext">Der höchste Preis, den Burni jemals erreicht hat.</span>
+                        </li>
+                         <li class="tooltip"><strong>Allzeittief (ATL):</strong> 0.0528 XRP (17. Mai 2025)
+                            <span class="tooltiptext">Der niedrigste Preis, den Burni jemals erreicht hat. (Hinweis: Daten laut Bericht)</span>
+                        </li>
+                        <li><strong>Gesamtversorgung:</strong> 967.9 Tausend Token</li>
+                        <li><strong>Plattform:</strong> XRP Ledger (XRPL)</li>
+                    </ul>
+                     <p class="text-sm text-gray-500 mt-4">Hinweis: Preisdaten können variieren. ATH/ATL-Werte basieren auf den Informationen im zugrundeliegenden Bericht. Die Angabe ATL > ATH ist ungewöhnlich und wird hier gemäß Berichtsquelle wiedergegeben.</p>
+                </div>
+
+                <div class="section-card p-8">
+                    <h3 class="text-3xl mb-6 text-center">Versorgungsübersicht</h3>
+                    <div class="chart-container">
+                        <canvas id="supplyChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm text-gray-600 mt-4">Diese Grafik visualisiert die zirkulierende Versorgung im Verhältnis zur maximalen Versorgung.</p>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center section-card p-8 max-w-3xl mx-auto">
+                <h3 class="text-3xl mb-4">Auf dem XRP Ledger Zuhause 🏡</h3>
+                <p class="text-gray-600 mb-4">Burni operiert auf dem XRP Ledger (XRPL), bekannt für seine Geschwindigkeit, niedrigen Transaktionskosten und Skalierbarkeit. Das bedeutet für dich: schnelle und kostengünstige Transaktionen! Um Burni zu halten oder zu handeln, musst du eine "Trustline" einrichten – ein Standardverfahren auf dem XRPL.</p>
+                <img src="https://placehold.co/100x100/2DD4BF/FFFFFF?text=XRPL%20Blitz&font=Baloo%202" alt="XRPL Geschwindigkeit Symbol" class="mx-auto h-20 my-4">
+                <p class="text-gray-600 font-semibold">Schnell, effizient und zuverlässig – das ist die Basis von Burni.</p>
+            </div>
+             <div class="mt-12 text-center section-card p-8 max-w-3xl mx-auto bg-yellow-50">
+                <h3 class="text-3xl mb-4 text-yellow-600">Eine junge Chance 🌱</h3>
+                <p class="text-gray-700 mb-4">Mit einem Erstellungsdatum im Mai 2025 und einer wachsenden, aber noch überschaubaren Anzahl von Haltern, ist Burni ein junges Projekt. Der "Blackholed"-Status von Beginn an und das deflationäre Modell deuten auf eine langfristige Vision hin. Sei Teil dieser frühen Phase und wachse mit uns!</p>
+                 <a href="#community" class="pixar-button pixar-button-secondary px-6 py-3 rounded-full">Tritt der Community bei!</a>
+            </div>
+        </section>
+
+        <section id="interact" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl mb-4">Mit Burni Handeln</h2>
+                <p class="text-lg text-gray-700 max-w-xl mx-auto">Bist du bereit, in die Welt von Burni einzutauchen? Hier findest du die wichtigsten Links, um Burni auf XPMarket zu handeln und zu verwalten. Unser Burni-Maskottchen zeigt dir den Weg!</p>
+            </div>
+            <div class="flex justify-center mb-8">
+                 <img src="https://placehold.co/120x120/FF8C00/FFFFFF?text=Lachendes%20Flammen-Maskottchen%20(Burni%20zeigt%20Weg)&font=Baloo%202" alt="Burni Maskottchen zeigt den Weg" class="burni-mascot">
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <a href="https://xpmarket.com/token/Burni-rJzQVveWEob6x6PJQqXm9sdcFjGbACBwv2" target="_blank" class="section-card p-6 text-center hover:shadow-xl transition-shadow duration-300 flex flex-col items-center justify-center">
+                    <span class="text-5xl mb-3">🪙</span>
+                    <h3 class="text-2xl mb-2 text-orange-500">Token Seite</h3>
+                    <p class="text-gray-600 text-sm">Alle Infos zu Burni auf XPMarket.</p>
+                </a>
+                <a href="https://xpmarket.com/trustline/Burni-rJzQVveWEob6x6PJQqXm9sdcFjGbACBwv2/set" target="_blank" class="section-card p-6 text-center hover:shadow-xl transition-shadow duration-300 flex flex-col items-center justify-center">
+                    <span class="text-5xl mb-3">🤝</span>
+                    <h3 class="text-2xl mb-2 text-orange-500">Trustline setzen</h3>
+                    <p class="text-gray-600 text-sm">Aktiviere Burni in deiner XRPL-Wallet.</p>
+                </a>
+                <a href="https://xpmarket.com/dex/Burni-rJzQVveWEob6x6PJQqXm9sdcFjGbACBwv2/XRP?trade=market" target="_blank" class="section-card p-6 text-center hover:shadow-xl transition-shadow duration-300 flex flex-col items-center justify-center">
+                    <span class="text-5xl mb-3">📈</span>
+                    <h3 class="text-2xl mb-2 text-orange-500">DEX Handel</h3>
+                    <p class="text-gray-600 text-sm">Kaufe/Verkaufe Burni auf der dezentralen Börse.</p>
+                </a>
+                <a href="https://xpmarket.com/swap/Burni-rJzQVveWEob6x6PJQqXm9sdcFjGbACBwv2/XRP/market" target="_blank" class="section-card p-6 text-center hover:shadow-xl transition-shadow duration-300 flex flex-col items-center justify-center">
+                    <span class="text-5xl mb-3">🔄</span>
+                    <h3 class="text-2xl mb-2 text-orange-500">SWAP</h3>
+                    <p class="text-gray-600 text-sm">Tausche Burni einfach gegen andere Token.</p>
+                </a>
+            </div>
+            <p class="text-center text-sm text-gray-500 mt-8">Bitte beachte: Investitionen in Kryptowährungen sind mit Risiken verbunden. Informiere dich gut, bevor du handelst.</p>
+            
+            <div class="mt-16 section-card p-8">
+                <h3 class="text-3xl mb-6 text-center">Marktdaten (ATH/ATL Visualisierung)</h3>
+                 <p class="text-center text-gray-600 mb-6">Diese Grafik zeigt das Allzeithoch (ATH) und Allzeittief (ATL) von Burni in XRP, basierend auf den Berichtsdaten. Beachte, dass die Datenlage (ATL > ATH) ungewöhnlich ist.</p>
+                <div class="chart-container h-72 md:h-96">
+                    <canvas id="athAtlChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="community" class="py-16 bg-teal-50 rounded-3xl">
+            <div class="text-center mb-12">
+                 <img src="https://placehold.co/120x120/2DD4BF/FFFFFF?text=Community%20(Pixar%20Stil)&font=Baloo%202" alt="Community Symbol" class="mx-auto mb-6 h-24">
+                <h2 class="text-4xl md:text-5xl mb-4 text-teal-600">Die Burni Gemeinschaft</h2>
+                <p class="text-lg text-gray-700 max-w-xl mx-auto">Eine starke Gemeinschaft ist das Herz von Burni! Werde Teil unserer wachsenden Familie, tausche dich aus und gestalte die Zukunft von Burni mit.</p>
+            </div>
+
+            <div class="text-center">
+                <p class="text-xl text-gray-800 mb-6">Folge uns auf X (ehemals Twitter), um die neuesten Nachrichten, Updates und Community-Aktionen nicht zu verpassen!</p>
+                <a href="https://x.com/burnicoin" target="_blank" class="pixar-button px-10 py-4 text-xl rounded-full inline-flex items-center">
+                    <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg>
+                    Burni auf X folgen
+                </a>
+                 <p class="text-gray-600 mt-8 max-w-lg mx-auto">Die Idee von "Community Challenges", bei denen Nutzer für gemeinsame Ziele belohnt werden könnten, ist etwas, das wir für die Zukunft spannend finden, um das Engagement spielerisch zu fördern!</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-12 text-center">
+        <div class="container mx-auto px-6">
+            <span class="text-2xl font-bold text-orange-400 mb-4 block">🔥 Burni</span>
+            <p class="mb-2 text-gray-400">Entwickelt mit Leidenschaft und einer Prise Pixar-Magie.</p>
+            <p class="text-sm text-gray-500">&copy; <span id="currentYear"></span> Burni Token. Alle Rechte vorbehalten (Konzept). Dies ist eine konzeptionelle Webseite basierend auf einem Bericht.</p>
+            <p class="text-xs text-gray-600 mt-2">Maskottchen-Platzhalter von placehold.co</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Smooth scrolling and active nav link
+        const navLinks = document.querySelectorAll('nav a.nav-link, #mobile-menu a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (this.hash !== "") {
+                    e.preventDefault();
+                    const hash = this.hash;
+                    const targetElement = document.querySelector(hash);
+                    if (targetElement) {
+                        const offsetTop = targetElement.offsetTop - 80; // Adjusted for sticky nav
+                         window.scrollTo({
+                            top: offsetTop,
+                            behavior: "smooth"
+                        });
+
+                        // Update active link
+                        navLinks.forEach(nav => nav.classList.remove('active'));
+                        // Add active to desktop and mobile if exists
+                        document.querySelectorAll(`nav a[href="${hash}"], #mobile-menu a[href="${hash}"]`).forEach(activeLink => {
+                           activeLink.classList.add('active');
+                        });
+                        
+                        if (mobileMenu.classList.contains('hidden') === false) {
+                           mobileMenu.classList.add('hidden');
+                        }
+                    }
+                }
+            });
+        });
+        
+        // Update active nav link on scroll
+        const sections = document.querySelectorAll('section');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 90) { // Adjusted for sticky nav
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+             // Ensure first link is active if at top
+            if (window.pageYOffset < sections[0].offsetTop - 90) {
+                navLinks.forEach(link => link.classList.remove('active'));
+                document.querySelectorAll(`nav a[href="#hero"], #mobile-menu a[href="#hero"]`).forEach(heroLink => {
+                    heroLink.classList.add('active');
+                });
+            }
+        });
+
+
+        // Chart.js - Supply Chart
+        const supplyCtx = document.getElementById('supplyChart')?.getContext('2d');
+        if (supplyCtx) {
+            new Chart(supplyCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Zirkulierende Versorgung (388.4K)', 'Verbleibende Max. Versorgung'],
+                    datasets: [{
+                        label: 'Token Versorgung',
+                        data: [388400, 1000000 - 388400],
+                        backgroundColor: [
+                            '#FDBA74', // Soft Orange
+                            '#D1D5DB'  // Gray-300
+                        ],
+                        borderColor: [
+                            '#F97316', // Energetic Red-Orange
+                            '#9CA3AF'  // Gray-400
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                             labels: {
+                                color: '#374151' 
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += new Intl.NumberFormat('de-DE').format(context.parsed) + ' Token';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Chart.js - ATH/ATL Chart
+        const athAtlCtx = document.getElementById('athAtlChart')?.getContext('2d');
+        if (athAtlCtx) {
+            new Chart(athAtlCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Allzeittief (ATL) am 17.05.2025', 'Allzeithoch (ATH) am 19.05.2025'],
+                    datasets: [{
+                        label: 'Preis in XRP',
+                        data: [0.0528, 0.0011], // Data from report: ATL, ATH
+                        backgroundColor: [
+                            '#FCA5A5', // Red-300 for ATL
+                            '#6EE7B7'  // Emerald-300 for ATH
+                        ],
+                        borderColor: [
+                            '#EF4444', // Red-500
+                            '#10B981'  // Emerald-500
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Preis in XRP',
+                                color: '#374151'
+                            },
+                            ticks: { color: '#374151' }
+                        },
+                        y: {
+                             ticks: { color: '#374151', font: { size: 10 } }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.x + ' XRP';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Simulate dynamic data update for circulating supply and price (example)
+        // In a real app, this would come from an API
+        /*
+        setTimeout(() => {
+            document.getElementById('circulatingSupplyValue').textContent = '390.2K';
+            document.getElementById('priceValue').textContent = '$0.0012';
+        }, 5000);
+        */
+
+    </script>
+</body>
+</html>
